@@ -1,0 +1,54 @@
+sleep 5
+spawn qemu-system-x86_64 -machine q35 -m 1024 -smp cpus=2 -cpu qemu64 \
+  -drive if=pflash,format=raw,read-only,file=$env(PREFIX)/share/qemu/edk2-x86_64-code.fd \
+  -netdev user,id=n1,hostfwd=tcp::2222-:22 -device virtio-net,netdev=n1 \
+  -nographic alpine.img
+
+set qemuID $spawn_id
+
+expect "login:"
+send "root\r"
+
+expect "Password:"
+send "$env(ROOT_PASSWORD)\n"
+
+expect "#"
+send "apk update && apk add docker ip6tables\r"
+
+expect "#"
+send "service docker start\r"
+
+expect "#"
+send "rc-update add docker\r"
+
+expect "#"
+send "apk add zram-init\r"
+
+# fix broken zram init script
+expect "#"
+send "sed -i -E 's/num_devices=2/num_devices=1/' /etc/conf.d/zram-init\r"
+
+expect "#"
+send "service zram-init start\r"
+
+expect "#"
+send "rc-update add zram-init\r"
+
+expect "#"
+send "mkdir -p /root/.ssh\r"
+
+expect "#"
+send "chmod 700 /root/.ssh\r"
+
+expect "#"
+send "echo $qemukey >> /root/.ssh/authorized_keys\r"
+
+expect "#"
+send "halt\r"
+
+expect "System halted"
+# Ctrl-a + x (qemu machine monitor halt)
+send "\x01"
+send "x"
+
+close -i $qemuID
