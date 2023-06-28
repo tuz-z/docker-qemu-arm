@@ -1,11 +1,10 @@
-sleep 5
 spawn qemu-system-x86_64 -machine q35 -m 1024 -smp cpus=2 -cpu qemu64 \
   -drive if=pflash,format=raw,read-only,file=$env(PREFIX)/share/qemu/edk2-x86_64-code.fd \
   -netdev user,id=n1,hostfwd=tcp::2222-:22 -device virtio-net,netdev=n1 \
   -nographic alpine.img
 
 set qemuID $spawn_id
-
+sleep 15
 expect "login:"
 send "root\r"
 
