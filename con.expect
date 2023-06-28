@@ -1,5 +1,5 @@
 set timeout -1
-set qemukey [exec cat ./qemukey.pub]
+set qemukey [exec cat qemukey.pub]
 
 spawn qemu-system-x86_64 -machine q35 -m 1024 -smp cpus=2 -cpu qemu64 \
   -drive if=pflash,format=raw,read-only,file=$env(PREFIX)/share/qemu/edk2-x86_64-code.fd \
