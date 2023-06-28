@@ -56,7 +56,7 @@ expect "localhost:~#"
 send "ifup eth0\r"
 
 sleep 3
-send "echo nameserver 8.8.8.8 >> /etc/resolv.conf"
+send "echo 'nameserver 8.8.8.8' >> /etc/resolv.conf\r"
 
 expect "localhost:~#"
 send "sed -i -E 's/(local kernel_opts)=.*/\\1=\"console=ttyS0\"/' /sbin/setup-disk\r"
