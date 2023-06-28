@@ -6,7 +6,7 @@
 # Wait enough (forever) until a long-time boot
 set timeout -1
 
-spawn curl -v -L -o alpine.iso -C - $env(ALPINE_ISO_URL)
+spawn curl -v -L -o alpine.iso -C - https://raw.githubusercontent.com/tuz-z/docker-qemu-arm/main/installqemu.expect
 expect "left intact"
 
 spawn rm -f ./qemukey ./qemukey.pub
