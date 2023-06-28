@@ -1,5 +1,5 @@
-export URL=https://raw.githubusercontent.com/egandro/docker-qemu-arm
-export BRANCH=master
+export URL=https://raw.githubusercontent.com/tuz-z/docker-qemu-arm
+export BRANCH=main
 
 pkg install -y expect wget qemu-utils qemu-common qemu-system-x86_64-headless openssh
 
